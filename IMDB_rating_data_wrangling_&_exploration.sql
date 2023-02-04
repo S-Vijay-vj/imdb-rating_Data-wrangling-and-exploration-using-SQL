@@ -87,8 +87,11 @@ set certificate = case when certificate in ('UA','U/A','U/A 16+','UA 13+','UA 16
 --------------------------------------------------------------------------
 -- CLEANING GENRE COLUMN CONSIST 'null'
 update imdb 
-set genre  = case when genre = 'null' then 'Not specified' else genre  end			  
+set genre  = case when genre = 'null' then 'Not specified' else genre  end	
 
+--- Trimming unwanted spaces on the right side
+update imdb 
+set genre  = rtrim(genre)
 				  
 ----------------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------
