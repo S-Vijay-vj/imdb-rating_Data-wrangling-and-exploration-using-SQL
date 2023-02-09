@@ -1,4 +1,4 @@
--------------------------------------------------------------------------
+------------------------------------------------------------------------
 ------------------------------Data cleaning-----------------------------
 
 -- cleaning year column consist of data like (2018-2020 ,  2022– , III 2022)
@@ -91,7 +91,19 @@ set genre  = case when genre = 'null' then 'Not specified' else genre  end
 
 --- Trimming unwanted spaces on the right side
 update imdb 
-set genre  = rtrim(genre)
+set genre  = rtrim(genre) 
+
+
+----------------------------------------------------------------------------
+--- Creating a column - Weighted average 
+select (votes / (votes + 25000.0)) * rating + (25000 / (votes + 25000.0)) * (select  AVG(rating) FROM imdb)  AS Weighted_rating 
+FROM imdb
+order by weighted_rating desc ;
+
+ALTER TABLE imdb  ADD COLUMN weighted_rating FLOAT;
+
+update imdb 
+set weighted_rating = (votes / (votes + 25000.0)) * rating + (25000 / (votes + 25000.0)) * (select  AVG(rating) FROM imdb)
 				  
 ----------------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------
